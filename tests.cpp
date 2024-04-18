@@ -16,6 +16,9 @@ void Tests::testDomain() {
 	testToString();
 	testOperatori();
 	testComparatori();
+	testDTO();
+	testCopyDTO();
+	testGetDTO();
 }
 
 void Tests::testRepo() {
@@ -33,6 +36,19 @@ void Tests::testService() {
 	testCautaSrv();
 	testFiltrare();
 	testSortare();
+	testContract();
+	testAdaugaContract();
+	testGenereazaContract();
+	testExportaContract();
+	testEmptyContract();
+	testGetAllContract();
+	test_genereaza_contract();
+	test_exporta_contract();
+	test_empty_contract();
+	test_adauga_la_contract();
+	test_getContractsize();
+	testRaport();
+	testFilterDenumire();
 }
 
 void Tests::testValidator() {
@@ -124,6 +140,23 @@ void Tests::testComparatori() {
 
 	assert(cmpProfTip(test1, test3) == true);
 	assert(cmpProfTip(test3, test1) == false);
+}
+
+void Tests::testDTO() {
+	DTO test{ "real", 3 };
+	assert(test.get_count() == 3);
+}
+
+void Tests::testCopyDTO() {
+	DTO test{ "real", 3 };
+	DTO test_copy(test);
+	assert(test_copy.get_count() == 3);
+}
+
+void Tests::testGetDTO() {
+	DTO test{ "real", 3 };
+	assert(test.get_entity_type() == "real");
+	assert(test.get_count() == 3);
 }
 
 ///
@@ -349,4 +382,236 @@ void Tests::testFiltrare() {
 	vector<Disciplina> filtrat_profesor = service.filterProfesor("Ionescu");
 	assert(test1.operator==(filtrat_profesor[0]));
 
+}
+
+void Tests::testContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.adaugaContract(test);
+	contract.adaugaContract(test1);
+
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 2);
+
+	contract.emptyContract();
+	assert(discipline.size() == 0);
+
+	contract.genereazaContract(1, service.getAll());
+	assert(discipline.size() == 1);
+}
+
+void Tests::testAdaugaContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.adaugaContract(test);
+	contract.adaugaContract(test1);
+
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 2);
+}
+
+void Tests::testGenereazaContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.genereazaContract(1, service.getAll());
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 1);
+}
+
+void Tests::testExportaContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.genereazaContract(1, service.getAll());
+	contract.exportContract("contract.txt");
+}
+
+void Tests::testEmptyContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.genereazaContract(1, service.getAll());
+	contract.emptyContract();
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 0);
+}
+
+void Tests::testGetAllContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.genereazaContract(1, service.getAll());
+	const vector<Disciplina>& discipline = service.getAllContract();
+	assert(discipline.size() == 1);
+}
+
+void Tests::test_adauga_la_contract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	contract.genereazaContract(1, service.getAll());
+	service.adauga_la_contract("info", "Alexe", service.getAll());
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 1);
+
+	service.adauga_la_contract("mate", "Ionescu", service.getAll());
+	const vector<Disciplina>& discipline1 = contract.get_contract();
+	assert(discipline1.size() == 2);
+}
+
+void Tests::test_genereaza_contract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	service.genereaza_contract(1);
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 1);
+}
+
+void Tests::test_exporta_contract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	service.genereaza_contract(1);
+	service.exporta_contract("contract.txt");
+}
+
+void Tests::test_empty_contract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	service.genereaza_contract(1);
+	service.empty_contract();
+	const vector<Disciplina>& discipline = contract.get_contract();
+	assert(discipline.size() == 0);
+}
+
+void Tests::test_getContractsize() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	service.genereaza_contract(1);
+	assert(service.getContractsize() == 1);
+}
+
+void Tests::testRaport() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	map<string, DTO> raport = service.raport();
+	assert(raport["real"].get_count() == 1);
+	assert(raport["uman"].get_count() == 1);
+}
+
+void Tests::testFilterDenumire() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+
+	vector<Disciplina> filtrat = service.filterDenumire("info");
+	assert(test.operator==(filtrat[0]));
 }

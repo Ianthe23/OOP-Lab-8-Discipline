@@ -2,7 +2,31 @@
 #define DOMAIN_H_
 
 #include <string>
+#include <map>
+
+using std::map;
 using std::string;
+
+class DTO {
+	string entity_type;
+	int count;
+
+public:
+	DTO(const string& entity_type, int count) : entity_type{ entity_type }, count{ count } {};
+
+	DTO(const string& entity_type) : entity_type{ entity_type }, count{ 0 } {};
+
+	DTO() : entity_type{ "" }, count{ 0 } {};
+
+	[[nodiscard]] const string& get_entity_type() const noexcept {
+		return entity_type;
+	}
+
+	[[nodiscard]] int get_count() const noexcept {
+		return count;
+	}
+	
+};
 
 class Disciplina {
 

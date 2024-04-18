@@ -15,6 +15,9 @@ class Tests {
 	void testToString();
 	void testOperatori();
 	void testComparatori();
+	void testDTO();
+	void testCopyDTO();
+	void testGetDTO();
 
 	void testRepo();
 	void testAdaugaRepo();
@@ -32,6 +35,19 @@ class Tests {
 	void testCautaSrv();
 	void testFiltrare();
 	void testSortare();
+	void testContract();
+	void testAdaugaContract();
+	void testGenereazaContract();
+	void testExportaContract();
+	void testEmptyContract();
+	void testGetAllContract();
+	void test_genereaza_contract();
+	void test_exporta_contract();
+	void test_empty_contract();
+	void test_adauga_la_contract();
+	void test_getContractsize();
+	void testRaport();
+	void testFilterDenumire();
 
 
 public:

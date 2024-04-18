@@ -232,6 +232,14 @@ void Ui::emptyContractUI() {
 	cout << GREEN << "\nDimensiunea contractului este: " << RESET << controller.getContractsize() << '\n';
 }
 
+void Ui::raportUI() {
+	map<string, DTO> raport = controller.raport();
+	cout << '\n' << MAGENTA << "Raportul este:\n" << RESET;
+	for (const auto& [key, value] : raport) {
+		cout << key << " " << value.get_count() << '\n';
+	}
+}
+
 void Ui::menu() {
 	cout << '\n';
 	cout << YELLOW << "-----------Meniul disciplinelor:-----------\n" << RESET;
@@ -246,6 +254,7 @@ void Ui::menu() {
 	cout << YELLOW << "8." << RESET << " Adauga la contract;\n";
 	cout << YELLOW << "9." << RESET << " Exporta contract;\n";
 	cout << YELLOW << "10." << RESET << "Goleste contract;\n";
+	cout << YELLOW << "11." << RESET << "Genereaza Raport;\n";
 	cout << YELLOW << "0." << RESET << " Exit.\n";
 	cout << YELLOW << "------------------------------------------------------------------\n\n" << RESET;
 }
@@ -256,6 +265,13 @@ void Ui::run() {
 	controller.adaugaSrv("mate", 4, "real", "Alexe");
 	controller.adaugaSrv("info", 6, "real", "Alexe");
 	controller.adaugaSrv("mate", 2, "uman", "Ionescu");
+	controller.adaugaSrv("mate", 2, "uman", "Marin");
+	controller.adaugaSrv("info", 4, "real", "Ionescu");
+	controller.adaugaSrv("info", 4, "real", "Marin");
+	controller.adaugaSrv("bio", 3, "real", "Popescu");
+	controller.adaugaSrv("bio", 2, "uman", "Pop");
+	controller.adaugaSrv("chimie", 3, "real", "Marinescu");
+	controller.adaugaSrv("chimie", 3, "real", "Musat");
 
 	while (true) {
 		printAll();
@@ -388,6 +404,20 @@ void Ui::run() {
 		case 10:
 			try {
 				emptyContractUI();
+			}
+			catch (RepoException& e) {
+				cout << RED << e.get_mesaj() << RESET;
+			}
+			catch (ValidatorException& ve) {
+				cout << RED << ve.get_mesaj() << RESET;
+			}
+			catch (ContractException& ve) {
+				cout << RED << ve.get_mesaj() << RESET;
+			}
+			break;
+		case 11:
+			try {
+				raportUI();
 			}
 			catch (RepoException& e) {
 				cout << RED << e.get_mesaj() << RESET;

@@ -7,12 +7,15 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <functional>
 #include <random>
 #include <algorithm>
+#include <map>
 
 using std::string;
 using std::vector;
+using std::map;
 using std::function;
 using std::copy_if;
 using std::shuffle;
@@ -35,6 +38,8 @@ public:
 	void exporta_contract(const string& nume);
 
 	void empty_contract();
+
+	map<string, DTO> raport() noexcept;
 
 	Service(Repo& repo, Validator& validator, Contract& contract) noexcept : repo{ repo }, validator{ validator }, contract{ contract } {
 

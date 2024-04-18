@@ -40,6 +40,8 @@ class Ui {
 
 	void emptyContractUI();
 
+	void raportUI();
+
 public:
 	explicit Ui(Service& controller) noexcept: controller(controller) {
 

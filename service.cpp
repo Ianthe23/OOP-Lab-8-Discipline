@@ -1,5 +1,6 @@
 #include "service.h"
 
+
 const vector<Disciplina>& Service::getAllContract() noexcept {
 	return contract.get_contract();
 }
@@ -31,6 +32,23 @@ void Service::adauga_la_contract(const string& denumire, const string& profesor,
 
 int Service::getContractsize() {
 	return contract.get_contract().size();
+}
+
+map<string, DTO> Service::raport() noexcept {
+	map<string, DTO> raport;
+	auto discipline = repo.getAll();
+
+	for (const auto& disciplina : discipline) {
+		DTO tip(disciplina.get_tip());
+		raport[disciplina.get_tip()] = tip;
+	}
+
+	for (const auto& disciplina : discipline) {
+		int nr = raport[disciplina.get_tip()].get_count() + 1;
+		DTO val(disciplina.get_tip(), nr);
+		raport[disciplina.get_tip()] = val;
+	}
+	return raport;
 }
 
 void Service::adaugaSrv(const string& denumire, int ore, const string& tip, const string& profesor) {

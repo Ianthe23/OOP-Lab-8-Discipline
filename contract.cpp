@@ -35,6 +35,9 @@ void Contract::emptyContract() noexcept{
 }
 
 void Contract::genereazaContract(int nr_discipline, const vector<Disciplina>& memorie) {
+	if (nr_discipline > memorie.size()) {
+		throw ContractException("Nu exista suficiente discipline in memorie!");
+	}
 	emptyContract();
 	auto to_contract = memorie;
 	shuffle(to_contract.begin(), to_contract.end(), std::default_random_engine(time(0)));
