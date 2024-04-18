@@ -492,7 +492,7 @@ void Tests::testExportaContract() {
 	contract.genereazaContract(1, service.getAll());
 	contract.exportContract("contract1");
 
-	contract.exportContract("contract.htlm");
+	contract.exportContract("contract.html");
 }
 
 void Tests::testEmptyContract() {
