@@ -37,6 +37,7 @@ class Tests {
 	void testSortare();
 	void testContract();
 	void testAdaugaContract();
+	void testCautaContract();
 	void testGenereazaContract();
 	void testExportaContract();
 	void testEmptyContract();

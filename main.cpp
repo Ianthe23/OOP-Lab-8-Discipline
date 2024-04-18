@@ -37,7 +37,7 @@ void creeare() {
 	Service controller(repo, validator, contract);
 	Ui ui{ controller };
 
-	//ui.run();
+	ui.run();
 }
 
 int main() {

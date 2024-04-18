@@ -38,6 +38,7 @@ void Tests::testService() {
 	testSortare();
 	testContract();
 	testAdaugaContract();
+	testCautaContract();
 	testGenereazaContract();
 	testExportaContract();
 	testEmptyContract();
@@ -426,6 +427,29 @@ void Tests::testAdaugaContract() {
 
 	const vector<Disciplina>& discipline = contract.get_contract();
 	assert(discipline.size() == 2);
+
+	//adauga la contract o disciplina care exista deja
+	try {
+		contract.adaugaContract(test);
+	}
+	catch (ContractException& mesaj) {
+		assert(mesaj.get_mesaj() == "Disciplina deja exista!");
+	}
+}
+
+void Tests::testCautaContract() {
+	vector<Disciplina> teste;
+	Repo repo(teste);
+	Validator validator;
+	Contract contract;
+	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+
+	service.adaugaSrv("info", 3, "real", "Alexe");
+
+	contract.adaugaContract(test);
+	assert(contract.cautaContract("info", "Alexe") == 0);
+	assert(contract.cautaContract("mate", "Ionescu") == -1);
 }
 
 void Tests::testGenereazaContract() {
@@ -443,6 +467,14 @@ void Tests::testGenereazaContract() {
 	contract.genereazaContract(1, service.getAll());
 	const vector<Disciplina>& discipline = contract.get_contract();
 	assert(discipline.size() == 1);
+
+	//genereaza contract cu mai multe discipline decat exista in memorie
+	try {
+		contract.genereazaContract(3, service.getAll());
+	}
+	catch (ContractException& mesaj) {
+		assert(mesaj.get_mesaj() == "Nu exista suficiente discipline in memorie!");
+	}
 }
 
 void Tests::testExportaContract() {
@@ -458,7 +490,9 @@ void Tests::testExportaContract() {
 	service.adaugaSrv("mate", 4, "uman", "Ionescu");
 
 	contract.genereazaContract(1, service.getAll());
-	contract.exportContract("contract.txt");
+	contract.exportContract("contract1");
+
+	contract.exportContract("contract.htlm");
 }
 
 void Tests::testEmptyContract() {
