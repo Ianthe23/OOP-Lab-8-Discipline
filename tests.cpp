@@ -49,7 +49,7 @@ void Tests::testService() {
 	test_adauga_la_contract();
 	test_getContractsize();
 	testRaport();
-	testFilterDenumire();
+	testFilterDenumire(); 
 }
 
 void Tests::testValidator() {
@@ -536,18 +536,32 @@ void Tests::test_adauga_la_contract() {
 	Validator validator;
 	Contract contract;
 	Service service(repo, validator, contract);
+	Disciplina test{ "info", 3, "real", "Alexe" };
+	Disciplina test1{ "mate", 4, "uman", "Ionescu" };
 
+	// Add disciplines to the repository
 	service.adaugaSrv("info", 3, "real", "Alexe");
 	service.adaugaSrv("mate", 4, "uman", "Ionescu");
+	service.adaugaSrv("info", 4, "real", "Popescu");
 
-	contract.genereazaContract(1, service.getAll());
-	service.adauga_la_contract("info", "Alexe", service.getAll());
+	// Add discipline to the contract that exists in the repository
+	service.adauga_la_contract("mate", "Ionescu", {});
+
 	const vector<Disciplina>& discipline = contract.get_contract();
+
+	// Assert that the contract contains the added discipline
 	assert(discipline.size() == 1);
 
-	service.adauga_la_contract("mate", "Ionescu", service.getAll());
-	const vector<Disciplina>& discipline1 = contract.get_contract();
-	assert(discipline1.size() == 2);
+	try {
+		service.adauga_la_contract("info", "Ionescu", {});
+	}
+	catch (RepoException& mesaj) {
+		assert(mesaj.get_mesaj() == "Disciplina nu exista!\n");
+	}
+
+	auto filtru = service.filterDenumire("info");
+	service.adauga_la_contract("info", "Pop", filtru);
+	assert(discipline.size() == 2);
 }
 
 void Tests::test_genereaza_contract() {

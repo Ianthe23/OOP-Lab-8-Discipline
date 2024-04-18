@@ -19,14 +19,19 @@ void Service::empty_contract() {
 
 void Service::adauga_la_contract(const string& denumire, const string& profesor, const vector<Disciplina>& filtered) {
 	auto gasit = repo.cautaRepo(denumire, profesor);
-	if (gasit) {
+	if (gasit >= 0) {
 		auto disciplina = repo.get_disciplina(denumire, profesor);
 		contract.adaugaContract(disciplina);
 	}
 	else if (gasit == -1) {
 		auto to_add = filtered;
 		std::shuffle(to_add.begin(), to_add.end(), std::default_random_engine(time(0)));
-		contract.adaugaContract(filtered.back());
+		if (filtered.size() >= 1) {
+			contract.adaugaContract(to_add.back());
+		}
+		else {
+			throw RepoException("Disciplina nu exista!\n");
+		}
 	}
 }
 
